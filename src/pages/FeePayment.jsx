@@ -20,7 +20,7 @@ function FeePayment({ onSuccess }) {
   const [paymentOption, setPaymentOption] = useState('full');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-  const [transactionRef, setTransactionRef] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const totalFee = feeAmounts[classLevel] || 0;
   const displayAmount = paymentOption === 'full' ? totalFee : totalFee / 2;
@@ -29,71 +29,105 @@ function FeePayment({ onSuccess }) {
     event.preventDefault();
     setLoading(true);
     setMessage(null);
-
+    setIsSuccess(false);
     try {
       const response = await api.post('/transactions/pay', { classLevel, paymentOption });
-      setTransactionRef(response.data.transaction.reference);
-      setMessage(`Payment successful. Reference: ${response.data.transaction.reference}`);
+      setMessage(`Payment confirmed. Reference: ${response.data.transaction.reference}`);
+      setIsSuccess(true);
       onSuccess?.(response.data);
     } catch (error) {
-      const err = error.response?.data?.message || 'Payment failed. Please try again.';
-      setMessage(err);
+      setMessage(error.response?.data?.message || 'Payment failed. Please try again.');
+      setIsSuccess(false);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-950 p-8 shadow-xl shadow-slate-950/20">
-      <h3 className="text-xl font-semibold text-white">Pay school fees</h3>
-      <p className="mt-2 text-slate-400">Choose your class and payment option below.</p>
+    <div className="rounded-2xl border border-indigo-500/12 bg-slate-900/60 p-6 backdrop-blur-sm">
+      <div className="flex items-center gap-3 mb-5">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/15">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#818cf8" strokeWidth={1.8}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-base font-semibold text-white">Pay school fees</h3>
+          <p className="text-xs text-slate-400">Select your class and payment option</p>
+        </div>
+      </div>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-6">
-        <label className="block text-sm text-slate-300">
-          Class level
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">Class level</label>
           <select
             value={classLevel}
             onChange={(e) => setClassLevel(e.target.value)}
-            className="mt-3 w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none"
+            className="input-field"
           >
             {classOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
+              <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>
-        </label>
+        </div>
 
-        <label className="block text-sm text-slate-300">
-          Payment option
-          <select
-            value={paymentOption}
-            onChange={(e) => setPaymentOption(e.target.value)}
-            className="mt-3 w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none"
-          >
-            <option value="full">Full fees</option>
-            <option value="half">Half fees</option>
-          </select>
-        </label>
+        <div>
+          <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">Payment option</label>
+          <div className="grid grid-cols-2 gap-3">
+            {['full', 'half'].map(opt => (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => setPaymentOption(opt)}
+                className={`rounded-xl border py-3 text-sm font-medium transition-all ${
+                  paymentOption === opt
+                    ? 'border-indigo-500/50 bg-indigo-500/15 text-indigo-300 ring-1 ring-indigo-500/30'
+                    : 'border-slate-700/50 bg-slate-800/40 text-slate-400 hover:border-slate-600'
+                }`}
+              >
+                {opt === 'full' ? 'Full fees' : 'Half fees'}
+              </button>
+            ))}
+          </div>
+        </div>
 
-        <div className="rounded-3xl bg-slate-900 p-5 text-slate-100">
-          <p className="text-sm uppercase tracking-[0.35em] text-cyan-300/80">Fee summary</p>
-          <p className="mt-3 text-lg">Class fee: ${totalFee.toLocaleString()}</p>
-          <p className="mt-2 text-2xl font-semibold">Amount due: ${displayAmount.toLocaleString()}</p>
+        <div className="rounded-xl border border-indigo-500/15 bg-slate-950/50 p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-slate-400">Class fee</span>
+            <span className="text-sm text-slate-300">${totalFee.toLocaleString()}</span>
+          </div>
+          <div className="flex items-center justify-between border-t border-slate-800 pt-2 mt-2">
+            <span className="text-xs font-semibold text-slate-300">Amount due</span>
+            <span className="text-xl font-bold text-white">${displayAmount.toLocaleString()}</span>
+          </div>
         </div>
 
         {message && (
-          <div className="rounded-3xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100">
+          <div className={`flex items-start gap-2.5 rounded-xl border px-4 py-3 text-sm ${
+            isSuccess
+              ? 'border-emerald-500/25 bg-emerald-500/8 text-emerald-300'
+              : 'border-rose-500/25 bg-rose-500/8 text-rose-300'
+          }`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className="mt-0.5 flex-shrink-0">
+              {isSuccess
+                ? <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                : <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+              }
+            </svg>
             {message}
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="btn-primary w-full justify-center rounded-3xl px-6 py-3"
-        >
-          {loading ? 'Processing...' : `Pay ${paymentOption === 'full' ? 'full' : 'half'} fees`}
+        <button type="submit" disabled={loading} className="btn-primary w-full py-3">
+          {loading ? (
+            <>
+              <svg className="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+              </svg>
+              Processing payment...
+            </>
+          ) : `Pay ${paymentOption === 'full' ? 'full' : 'half'} fees — $${displayAmount.toLocaleString()}`}
         </button>
       </form>
     </div>
