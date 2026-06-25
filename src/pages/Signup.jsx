@@ -55,21 +55,28 @@ function Signup() {
   const selectedRole = roles.find(r => r.value === role);
 
   return (
-    <div className="auth-bg min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md fade-in">
-        <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 mb-5 shadow-lg shadow-indigo-500/25">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={1.8}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"/>
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Create your account</h1>
-          <p className="mt-2 text-sm text-slate-400">Join the Kigaragara Finance System</p>
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden">
+      {/* Background image */}
+      <img
+        src="/kivox2.jpg"
+        alt="School background"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      {/* Dark overlay */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(10,20,50,0.65) 0%, rgba(10,20,50,0.45) 100%)' }} />
+
+      <div className="relative z-10 w-full max-w-md fade-in">
+        {/* Header above card */}
+        <div className="mb-6 text-center">
+          <img src="/school-badge.jpg" alt="Badge" className="h-16 w-16 rounded-xl object-cover mx-auto mb-3 shadow-xl ring-2 ring-white/30" />
+          <h1 className="text-3xl font-extrabold text-white tracking-tight drop-shadow">Create your account</h1>
+          <p className="mt-1 text-sm text-white/75">Join the Kigaragara Finance System</p>
         </div>
 
-        <div className="rounded-2xl border border-indigo-500/12 bg-slate-900/70 p-8 backdrop-blur-sm shadow-2xl shadow-slate-950/50 glow-indigo">
-          <div className="mb-6">
-            <p className="text-sm font-medium text-slate-300 mb-3">I am a...</p>
+        {/* Cream form card */}
+        <div className="rounded-3xl p-8 shadow-2xl" style={{ background: 'rgba(255,252,242,0.97)', border: '1px solid rgba(255,255,255,0.6)' }}>
+          <div className="mb-5">
+            <p className="text-sm font-semibold text-stone-700 mb-3">I am a...</p>
             <div className="grid grid-cols-2 gap-3">
               {roles.map((r) => (
                 <button
@@ -77,66 +84,70 @@ function Signup() {
                   type="button"
                   onClick={() => setRole(r.value)}
                   className={`flex items-center gap-3 rounded-xl border p-3.5 text-left transition-all duration-200 ${
-                    role === r.value ? r.selectedColor : 'border-slate-700/60 bg-slate-800/40 text-slate-400 hover:border-slate-600'
+                    role === r.value ? r.selectedColor : 'border-amber-200 bg-white text-stone-400 hover:border-amber-300'
                   }`}
                 >
-                  <span className={role === r.value ? (r.value === 'student' ? 'text-blue-300' : 'text-emerald-300') : 'text-slate-500'}>{r.icon}</span>
+                  <span className={role === r.value ? (r.value === 'student' ? 'text-blue-500' : 'text-emerald-500') : 'text-stone-400'}>{r.icon}</span>
                   <div>
-                    <p className={`text-sm font-semibold ${role === r.value ? 'text-white' : 'text-slate-300'}`}>{r.label}</p>
-                    <p className="text-[10px] text-slate-500 leading-tight mt-0.5">{r.desc}</p>
+                    <p className={`text-sm font-semibold ${role === r.value ? 'text-stone-800' : 'text-stone-600'}`}>{r.label}</p>
+                    <p className="text-[10px] text-stone-400 leading-tight mt-0.5">{r.desc}</p>
                   </div>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="mb-6">
+          <div className="mb-5">
             <GoogleSignInButton role={role} label={`Sign up as ${selectedRole?.label} with Google`} />
           </div>
 
-          <div className="divider mb-6">or register with email</div>
+          <div className="flex items-center gap-3 mb-5 text-amber-800/50 text-xs">
+            <div className="flex-1 h-px bg-amber-900/20" />
+            <span className="font-medium">or register with email</span>
+            <div className="flex-1 h-px bg-amber-900/20" />
+          </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Full name</label>
+              <label className="block text-sm font-semibold text-stone-700 mb-1.5">Full name</label>
               <input
                 type="text"
                 {...register('name', { required: true })}
-                className="input-field"
+                className="w-full rounded-xl border border-amber-200 bg-white px-4 py-3 text-stone-800 text-sm placeholder-stone-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
                 placeholder="John Doe"
                 autoComplete="name"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Email address</label>
+              <label className="block text-sm font-semibold text-stone-700 mb-1.5">Email address</label>
               <input
                 type="email"
                 {...register('email', { required: true })}
-                className="input-field"
+                className="w-full rounded-xl border border-amber-200 bg-white px-4 py-3 text-stone-800 text-sm placeholder-stone-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
                 placeholder="you@gmail.com"
                 autoComplete="email"
               />
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-slate-300">Password</label>
-                <button type="button" onClick={() => setShowPass(!showPass)} className="text-xs text-indigo-400 hover:text-indigo-300 transition">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-sm font-semibold text-stone-700">Password</label>
+                <button type="button" onClick={() => setShowPass(!showPass)} className="text-xs text-indigo-500 hover:text-indigo-700 transition font-medium">
                   {showPass ? 'Hide' : 'Show'}
                 </button>
               </div>
               <input
                 type={showPass ? 'text' : 'password'}
                 {...register('password', { required: true, minLength: 6 })}
-                className="input-field"
+                className="w-full rounded-xl border border-amber-200 bg-white px-4 py-3 text-stone-800 text-sm placeholder-stone-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
                 placeholder="Min. 6 characters"
                 autoComplete="new-password"
               />
             </div>
 
             {errorMessage && (
-              <div className="flex items-center gap-2 rounded-xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+              <div className="flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
                 </svg>
@@ -144,7 +155,7 @@ function Signup() {
               </div>
             )}
 
-            <button type="submit" disabled={isSubmitting} className="btn-primary w-full mt-2">
+            <button type="submit" disabled={isSubmitting} className="btn-primary w-full mt-1" style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', boxShadow: '0 4px 16px rgba(99,102,241,0.35)' }}>
               {isSubmitting ? (
                 <>
                   <svg className="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -157,9 +168,9 @@ function Signup() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-slate-500">
+          <p className="mt-5 text-center text-sm text-stone-500">
             Already have an account?{' '}
-            <Link to="/login" className="font-medium text-indigo-400 hover:text-indigo-300 transition">
+            <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-800 transition">
               Sign in
             </Link>
           </p>
