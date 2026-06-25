@@ -23,7 +23,7 @@ const socials = [
   },
   {
     label: 'WhatsApp',
-    href: 'https://wa.me/256752690294',
+    href: 'https://wa.me/256752690294?text=Hello%2C%20I%20am%20contacting%20you%20from%20the%20Kivox%20FMS%20website%20regarding%20Kigaragara%20Vocational%20Secondary%20School.',
     color: '#25D366',
     bg: 'rgba(37,211,102,0.15)',
     border: 'rgba(37,211,102,0.35)',
