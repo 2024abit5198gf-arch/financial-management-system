@@ -162,6 +162,17 @@ section {
   animation: fadeIn 0.4s ease forwards;
 }
 
+/* Slider zoom-in effect — image slowly scales from 1 → 1.12 over the slide duration */
+@keyframes sliderZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.12); }
+}
+
+.slider-zoom {
+  animation: sliderZoom 5.5s ease-out forwards;
+  transform-origin: center center;
+}
+
 /* Navigation glass */
 .nav-glass {
   background: rgba(3, 7, 18, 0.85);

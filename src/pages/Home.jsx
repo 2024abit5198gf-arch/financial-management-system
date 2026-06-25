@@ -92,29 +92,29 @@ function Home() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
         {/* Background image slider */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           <img
             key={current}
             src={slides[current].src}
             alt={slides[current].caption}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover slider-zoom"
             style={{
               opacity: fading ? 0 : 1,
-              transition: 'opacity 0.6s ease-in-out',
+              transition: 'opacity 0.7s ease-in-out',
             }}
           />
-          {/* Rich layered overlay */}
+          {/* Lighter overlay — just enough for text to read */}
           <div className="absolute inset-0"
             style={{
               background: `
-                linear-gradient(to right, rgba(10,10,30,0.85) 0%, rgba(10,10,30,0.55) 50%, rgba(10,10,30,0.80) 100%),
-                linear-gradient(to top, rgba(5,5,20,0.95) 0%, transparent 60%)
+                linear-gradient(to right, rgba(5,5,20,0.60) 0%, rgba(5,5,20,0.30) 50%, rgba(5,5,20,0.55) 100%),
+                linear-gradient(to top, rgba(5,5,20,0.80) 0%, transparent 55%)
               `
             }}
           />
-          {/* Colour tint overlay */}
+          {/* Subtle colour tint */}
           <div className="absolute inset-0"
-            style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.18) 0%, rgba(6,182,212,0.10) 50%, rgba(236,72,153,0.10) 100%)' }}
+            style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.10) 0%, rgba(6,182,212,0.06) 50%, rgba(236,72,153,0.06) 100%)' }}
           />
         </div>
 
