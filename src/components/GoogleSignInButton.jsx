@@ -97,12 +97,30 @@ function GoogleSignInButton({ role, label }) {
     <div>
       <button
         type="button"
-        className="btn-google"
         onClick={handleClick}
         disabled={loading || !gsiReady}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.65rem',
+          width: '100%',
+          padding: '0.875rem 1.5rem',
+          borderRadius: '0.875rem',
+          background: '#fff',
+          border: '2px solid #3b82f6',
+          cursor: loading || !gsiReady ? 'not-allowed' : 'pointer',
+          opacity: loading || !gsiReady ? 0.65 : 1,
+          boxShadow: '0 2px 10px rgba(59,130,246,0.15)',
+          transition: 'box-shadow 0.18s ease, border-color 0.18s ease',
+        }}
+        onMouseEnter={e => { if (!loading && gsiReady) e.currentTarget.style.boxShadow = '0 4px 18px rgba(59,130,246,0.28)'; }}
+        onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 10px rgba(59,130,246,0.15)'; }}
       >
         {loading ? <Spinner /> : <GoogleIcon />}
-        <span>{loading ? 'Connecting to Google...' : (label || 'Continue with Google')}</span>
+        <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#1d4ed8', letterSpacing: '0.01em' }}>
+          {loading ? 'Connecting to Google...' : (label || 'Continue with Google')}
+        </span>
       </button>
       {error && (
         <p className="mt-2 text-center text-sm text-rose-400">{error}</p>
