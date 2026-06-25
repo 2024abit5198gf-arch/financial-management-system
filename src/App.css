@@ -162,6 +162,13 @@ section {
   animation: fadeIn 0.4s ease forwards;
 }
 
+/* WhatsApp floating button pulse */
+@keyframes whatsappPulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  70%  { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
 /* Slider zoom-in effect — image slowly scales from 1 → 1.12 over the slide duration */
 @keyframes sliderZoom {
   from { transform: scale(1); }
