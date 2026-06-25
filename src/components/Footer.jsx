@@ -17,11 +17,11 @@ function Footer() {
         <div className="grid gap-10 md:grid-cols-3">
           <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 8v8M9 12l6-4M9 12l6 4" />
-                </svg>
-              </div>
+              <img
+                src="/school-badge.jpg"
+                alt="Kigaragara VSS Badge"
+                className="h-10 w-10 rounded-lg object-cover shadow-md"
+              />
               <div>
                 <p className="text-sm font-bold text-white leading-none">Kivox FMS</p>
                 <p className="text-[10px] text-slate-500 leading-none mt-0.5">Financial Management System</p>

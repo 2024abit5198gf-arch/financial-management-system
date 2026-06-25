@@ -2,16 +2,11 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const KivoxLogo = () => (
-  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="30" height="30" rx="9" fill="url(#kivox-grad)" />
-    <path d="M9 8v14M9 15l8-7M9 15l8 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <defs>
-      <linearGradient id="kivox-grad" x1="0" y1="0" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#6366f1" />
-        <stop offset="1" stopColor="#8b5cf6" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <img
+    src="/school-badge.jpg"
+    alt="Kigaragara VSS Badge"
+    className="h-10 w-10 rounded-lg object-cover shadow-md"
+  />
 );
 
 function Navigation() {
