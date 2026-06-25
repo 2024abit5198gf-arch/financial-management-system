@@ -5,7 +5,7 @@ const KivoxLogo = () => (
   <img
     src="/school-badge.jpg"
     alt="Kigaragara VSS Badge"
-    className="h-10 w-10 rounded-lg object-cover shadow-md"
+    className="h-14 w-14 rounded-xl object-cover shadow-md"
   />
 );
 
@@ -79,9 +79,9 @@ function Navigation() {
       to={to}
       end={end}
       className={({ isActive }) =>
-        `px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${isActive
+        `px-4 py-2 rounded-full text-base font-semibold transition-all duration-200 ${isActive
           ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25'
-          : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+          : 'text-slate-300 hover:text-white hover:bg-white/5'
         }`
       }
     >
@@ -95,10 +95,10 @@ function Navigation() {
         <NavLink to="/" className="flex items-center gap-3 group">
           <KivoxLogo />
           <div>
-            <p className="text-[15px] font-bold tracking-tight text-white leading-none group-hover:text-indigo-300 transition-colors">
+            <p className="text-xl font-bold tracking-tight text-white leading-none group-hover:text-indigo-300 transition-colors">
               Kivox FMS
             </p>
-            <p className="text-[10px] text-slate-500 leading-none mt-0.5 tracking-wide uppercase">
+            <p className="text-[12px] text-slate-400 leading-none mt-1 tracking-wide uppercase">
               Financial Management System
             </p>
           </div>
@@ -112,7 +112,7 @@ function Navigation() {
               {navLink('/login', 'Sign In')}
               <NavLink
                 to="/signup"
-                className="ml-1 px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-indigo-500 to-violet-500 text-white transition-all hover:shadow-lg hover:shadow-indigo-500/25"
+                className="ml-1 px-5 py-2.5 rounded-full text-base font-semibold bg-gradient-to-r from-indigo-500 to-violet-500 text-white transition-all hover:shadow-lg hover:shadow-indigo-500/25"
               >
                 Register
               </NavLink>

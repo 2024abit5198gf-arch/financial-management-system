@@ -129,13 +129,13 @@ function Home() {
         {/* Hero content */}
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center fade-in">
           {/* School badge + label */}
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <img src="/school-badge.jpg" alt="School Badge" className="h-16 w-16 rounded-xl object-cover shadow-2xl ring-2 ring-white/20" />
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <img src="/school-badge.jpg" alt="School Badge" className="h-24 w-24 rounded-2xl object-cover shadow-2xl ring-2 ring-white/20" />
             <div className="text-left">
-              <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#f0c040' }}>
+              <p className="text-base font-bold tracking-widest uppercase" style={{ color: '#f0c040' }}>
                 Kigaragara Vocational Secondary School
               </p>
-              <p className="text-xs text-slate-400 mt-0.5">"Educ. Is Our Future"</p>
+              <p className="text-sm text-slate-300 mt-1">"Educ. Is Our Future"</p>
             </div>
           </div>
 
@@ -217,8 +217,8 @@ function Home() {
       <section style={{ background: 'linear-gradient(180deg, #080818 0%, #0d1225 100%)' }} className="py-20 px-4">
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-3">What Kivox FMS Offers</h2>
-            <p className="text-slate-400 max-w-xl mx-auto">Everything you need to manage school finances in one place.</p>
+            <h2 className="text-4xl font-bold text-white mb-4">What Kivox FMS Offers</h2>
+            <p className="text-lg text-slate-400 max-w-xl mx-auto">Everything you need to manage school finances in one place.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {features.map((f) => (
