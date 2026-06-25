@@ -35,19 +35,20 @@ function StudentDashboard() {
 
         <FeeSummary role="student" />
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div>
-          <FeePayment onSuccess={handlePaymentSuccess} />
-          {latestPayment && (
-            <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900 p-6 text-slate-100 shadow-xl shadow-slate-950/20">
-              <p className="text-sm uppercase tracking-[0.35em] text-cyan-300/80">Last payment</p>
-              <p className="mt-3 text-slate-200">Reference: {latestPayment.transaction.reference}</p>
-              <p className="mt-2 text-slate-200">Amount paid: ${Number(latestPayment.amount).toFixed(2)}</p>
-            </div>
-          )}
-        </div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div>
+            <FeePayment onSuccess={handlePaymentSuccess} />
+            {latestPayment && (
+              <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900 p-6 text-slate-100 shadow-xl shadow-slate-950/20">
+                <p className="text-sm uppercase tracking-[0.35em] text-cyan-300/80">Last payment</p>
+                <p className="mt-3 text-slate-200">Reference: {latestPayment.transaction.reference}</p>
+                <p className="mt-2 text-slate-200">Amount paid: ${Number(latestPayment.amount).toFixed(2)}</p>
+              </div>
+            )}
+          </div>
 
-        <Transactions />
+          <Transactions />
+        </div>
       </div>
     </section>
   );
