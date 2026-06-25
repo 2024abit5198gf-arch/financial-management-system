@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
 import Home from './pages/Home';
@@ -14,9 +15,9 @@ import './App.css';
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
       <Navigation />
-      <main className="mx-auto max-w-6xl px-4 py-8">
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -53,15 +54,21 @@ function App() {
               </RoleProtectedRoute>
             }
           />
-          <Route path="/unauthorized" element={
-            <div className="rounded-3xl border border-slate-800 bg-slate-900/95 p-8 text-center">
-              <h1 className="text-2xl font-semibold text-white">Access Denied</h1>
-              <p className="mt-3 text-slate-400">You do not have permission to access this page.</p>
-            </div>
-          } />
+          <Route
+            path="/unauthorized"
+            element={
+              <div className="auth-bg min-h-[60vh] flex items-center justify-center px-4">
+                <div className="text-center">
+                  <h1 className="text-2xl font-bold text-white mb-3">Access Denied</h1>
+                  <p className="text-slate-400">You do not have permission to view this page.</p>
+                </div>
+              </div>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   );
 }

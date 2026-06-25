@@ -1,15 +1,14 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-const SchoolIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="8" fill="url(#nav-grad)"/>
-    <path d="M14 7L21 11V17L14 21L7 17V11L14 7Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" fill="none"/>
-    <circle cx="14" cy="14" r="2.5" fill="white"/>
+const KivoxLogo = () => (
+  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="30" height="30" rx="9" fill="url(#kivox-grad)" />
+    <path d="M9 8v14M9 15l8-7M9 15l8 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     <defs>
-      <linearGradient id="nav-grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#6366f1"/>
-        <stop offset="1" stopColor="#8b5cf6"/>
+      <linearGradient id="kivox-grad" x1="0" y1="0" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#6366f1" />
+        <stop offset="1" stopColor="#8b5cf6" />
       </linearGradient>
     </defs>
   </svg>
@@ -79,66 +78,48 @@ function Navigation() {
     ? userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
     : '?';
 
+  const navLink = (to, label, end = false) => (
+    <NavLink
+      key={to}
+      to={to}
+      end={end}
+      className={({ isActive }) =>
+        `px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${isActive
+          ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25'
+          : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+        }`
+      }
+    >
+      {label}
+    </NavLink>
+  );
+
   return (
     <header className="nav-glass sticky top-0 z-50">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 lg:px-6">
         <NavLink to="/" className="flex items-center gap-3 group">
-          <SchoolIcon />
+          <KivoxLogo />
           <div>
             <p className="text-[15px] font-bold tracking-tight text-white leading-none group-hover:text-indigo-300 transition-colors">
-              Kigaragara VSS
+              Kivox FMS
             </p>
-            <p className="text-[10px] text-slate-500 leading-none mt-0.5 tracking-wide uppercase">Finance System</p>
+            <p className="text-[10px] text-slate-500 leading-none mt-0.5 tracking-wide uppercase">
+              Financial Management System
+            </p>
           </div>
         </NavLink>
 
         <nav className="hidden md:flex items-center gap-1">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                isActive
-                  ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-              }`
-            }
-          >
-            Home
-          </NavLink>
-          {dashboardLink && (
-            <NavLink
-              to={dashboardLink.to}
-              className={({ isActive }) =>
-                `px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                }`
-              }
-            >
-              {dashboardLink.label}
-            </NavLink>
-          )}
+          {navLink('/', 'Home', true)}
+          {dashboardLink && navLink(dashboardLink.to, dashboardLink.label)}
           {!loggedIn && (
             <>
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    isActive
-                      ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                  }`
-                }
-              >
-                Sign in
-              </NavLink>
+              {navLink('/login', 'Sign In')}
               <NavLink
                 to="/signup"
                 className="ml-1 px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-indigo-500 to-violet-500 text-white transition-all hover:shadow-lg hover:shadow-indigo-500/25"
               >
-                Get started
+                Register
               </NavLink>
             </>
           )}
@@ -169,11 +150,11 @@ function Navigation() {
         >
           {menuOpen ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           )}
         </button>
@@ -187,14 +168,18 @@ function Navigation() {
           )}
           {!loggedIn && (
             <>
-              <NavLink to="/login" onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm text-slate-300 hover:bg-white/5 hover:text-white transition">Sign in</NavLink>
-              <NavLink to="/signup" onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-indigo-300 hover:bg-indigo-500/10 transition">Get started</NavLink>
+              <NavLink to="/login" onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm text-slate-300 hover:bg-white/5 hover:text-white transition">Sign In</NavLink>
+              <NavLink to="/signup" onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-indigo-300 hover:bg-indigo-500/10 transition">Register</NavLink>
             </>
           )}
           {loggedIn && (
             <div className="pt-2 border-t border-white/5">
-              <div className="px-4 py-2 text-sm text-slate-400">{userName} {roleLabel && <span className={`ml-2 ${roleClass}`}>{roleLabel}</span>}</div>
-              <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="w-full text-left px-4 py-2.5 rounded-xl text-sm text-rose-400 hover:bg-rose-500/10 transition">Sign out</button>
+              <div className="px-4 py-2 text-sm text-slate-400">
+                {userName} {roleLabel && <span className={`ml-2 ${roleClass}`}>{roleLabel}</span>}
+              </div>
+              <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="w-full text-left px-4 py-2.5 rounded-xl text-sm text-rose-400 hover:bg-rose-500/10 transition">
+                Sign out
+              </button>
             </div>
           )}
         </div>
