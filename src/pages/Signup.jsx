@@ -5,7 +5,7 @@ import api from '../api';
 import GoogleSignInButton from '../components/GoogleSignInButton';
 
 function Signup() {
-  const { register, handleSubmit, formState: { isSubmitting } } = useForm();
+  const { register, handleSubmit, watch, formState: { isSubmitting, errors } } = useForm();
   const [errorMessage, setErrorMessage] = useState('');
   const [showPass, setShowPass] = useState(false);
   const navigate = useNavigate();
@@ -13,36 +13,43 @@ function Signup() {
   const onSubmit = async (data) => {
     setErrorMessage('');
     try {
-      const response = await api.post('/auth/signup', { ...data, role: 'student' });
+      const response = await api.post('/auth/signup', {
+        name: data.name.trim(),
+        email: data.email.trim().toLowerCase(),
+        password: data.password,
+        role: 'student',
+      });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       window.dispatchEvent(new Event('authChange'));
       navigate('/student-dashboard');
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Signup failed. Please try again.');
+      if (error.response) {
+        setErrorMessage(error.response.data?.message || `Error ${error.response.status}. Please try again.`);
+      } else if (error.request) {
+        setErrorMessage('Cannot reach the server. Please check your internet connection and try again.');
+      } else {
+        setErrorMessage('Something went wrong. Please try again.');
+      }
     }
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden">
-      {/* Background image */}
       <img
         src="/kivox2.jpg"
         alt="School background"
         className="absolute inset-0 w-full h-full object-cover"
       />
-      {/* Dark overlay */}
       <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(10,20,50,0.68) 0%, rgba(10,20,50,0.48) 100%)' }} />
 
       <div className="relative z-10 w-full max-w-md fade-in">
-        {/* Header above card */}
         <div className="mb-6 text-center">
           <img src="/school-badge.jpg" alt="Badge" className="h-16 w-16 rounded-xl object-cover mx-auto mb-3 shadow-xl ring-2 ring-white/30" />
           <h1 className="text-3xl font-extrabold text-white tracking-tight drop-shadow">Student Registration</h1>
           <p className="mt-1 text-base text-white/80 font-medium">Create your student account below</p>
         </div>
 
-        {/* Cream form card */}
         <div className="rounded-3xl p-8 shadow-2xl" style={{ background: 'rgba(255,252,242,0.97)', border: '1px solid rgba(255,255,255,0.6)' }}>
 
           {/* Student badge banner */}
@@ -68,27 +75,36 @@ function Signup() {
             <div className="flex-1 h-px bg-stone-200" />
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
             <div>
               <label className="block text-sm font-bold text-stone-700 mb-1.5">Full Name</label>
               <input
                 type="text"
-                {...register('name', { required: true })}
-                className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-stone-800 text-sm font-medium placeholder-stone-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition"
+                {...register('name', { required: 'Full name is required' })}
+                className={`w-full rounded-xl border px-4 py-3 text-stone-800 text-sm font-medium placeholder-stone-400 outline-none focus:ring-2 transition ${
+                  errors.name ? 'border-rose-300 bg-rose-50 focus:border-rose-400 focus:ring-rose-100' : 'border-stone-200 bg-white focus:border-blue-400 focus:ring-blue-100'
+                }`}
                 placeholder="Enter your full name"
                 autoComplete="name"
               />
+              {errors.name && <p className="mt-1 text-xs font-medium text-rose-600">{errors.name.message}</p>}
             </div>
 
             <div>
               <label className="block text-sm font-bold text-stone-700 mb-1.5">Email Address</label>
               <input
                 type="email"
-                {...register('email', { required: true })}
-                className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-stone-800 text-sm font-medium placeholder-stone-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition"
+                {...register('email', {
+                  required: 'Email address is required',
+                  pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email address' },
+                })}
+                className={`w-full rounded-xl border px-4 py-3 text-stone-800 text-sm font-medium placeholder-stone-400 outline-none focus:ring-2 transition ${
+                  errors.email ? 'border-rose-300 bg-rose-50 focus:border-rose-400 focus:ring-rose-100' : 'border-stone-200 bg-white focus:border-blue-400 focus:ring-blue-100'
+                }`}
                 placeholder="you@gmail.com"
                 autoComplete="email"
               />
+              {errors.email && <p className="mt-1 text-xs font-medium text-rose-600">{errors.email.message}</p>}
             </div>
 
             <div>
@@ -100,16 +116,22 @@ function Signup() {
               </div>
               <input
                 type={showPass ? 'text' : 'password'}
-                {...register('password', { required: true, minLength: 6 })}
-                className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-stone-800 text-sm font-medium placeholder-stone-400 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition"
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: { value: 6, message: 'Password must be at least 6 characters' },
+                })}
+                className={`w-full rounded-xl border px-4 py-3 text-stone-800 text-sm font-medium placeholder-stone-400 outline-none focus:ring-2 transition ${
+                  errors.password ? 'border-rose-300 bg-rose-50 focus:border-rose-400 focus:ring-rose-100' : 'border-stone-200 bg-white focus:border-blue-400 focus:ring-blue-100'
+                }`}
                 placeholder="Minimum 6 characters"
                 autoComplete="new-password"
               />
+              {errors.password && <p className="mt-1 text-xs font-medium text-rose-600">{errors.password.message}</p>}
             </div>
 
             {errorMessage && (
-              <div className="flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <div className="flex items-start gap-2.5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className="mt-0.5 flex-shrink-0">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
                 </svg>
                 {errorMessage}
@@ -128,7 +150,7 @@ function Signup() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                   </svg>
-                  Creating account...
+                  Creating your account...
                 </>
               ) : 'Create Student Account'}
             </button>
@@ -141,7 +163,6 @@ function Signup() {
             </Link>
           </p>
 
-          {/* Note for staff */}
           <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-center">
             <p className="text-xs font-semibold text-amber-700">
               🔒 Staff &amp; Bursar accounts are created by the Administrator only.
